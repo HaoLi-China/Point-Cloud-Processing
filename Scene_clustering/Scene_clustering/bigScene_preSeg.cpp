@@ -1150,4 +1150,309 @@ void setPriorityforClusters(vector<MyPointCloud_RGB>& cluster_projected_pcs, vec
   bubbleSort(num, priority_vec);
 }
 
+//get position that robot should go
+void getRobotPosition(PointCloudPtr_RGB sourceCloud, vector<MyPointCloud> &wall_rect_clouds, Eigen::Matrix4f& matrix_transform, Eigen::Matrix4f& matrix_translation_r, Eigen::Matrix4f& matrix_transform_r, Point& position, Visualizer& vs){
+  PointCloudPtr_RGB new_cloud(new PointCloud_RGB);
+  pcl::transformPointCloud (*sourceCloud, *new_cloud, matrix_transform);
 
+  cv::Point2f p0;
+  cv::Point2f p1;
+  cv::Point2f p2;
+  cv::Point2f p3;
+
+  find_min_rect(new_cloud, p0,p1,p2,p3);
+
+  float min_x,min_y,min_z, max_x, max_y, max_z;
+
+  com_bounding_box(new_cloud, &min_x,&min_y,&min_z, &max_x, &max_y, &max_z);
+
+  PointCloudPtr box_cloud(new PointCloud);
+
+  box_cloud->push_back(Point(p0.x,p0.y,min_z));
+  box_cloud->push_back(Point(p1.x,p1.y,min_z));
+  box_cloud->push_back(Point(p2.x,p2.y,min_z));
+  box_cloud->push_back(Point(p3.x,p3.y,min_z));
+
+  box_cloud->push_back(Point(p0.x,p0.y,max_z));
+  box_cloud->push_back(Point(p1.x,p1.y,max_z));
+  box_cloud->push_back(Point(p2.x,p2.y,max_z));
+  box_cloud->push_back(Point(p3.x,p3.y,max_z));
+
+  PointCloud box_cloud_temp;
+  pcl::transformPointCloud (*box_cloud, box_cloud_temp, matrix_translation_r);
+  pcl::transformPointCloud (box_cloud_temp, *box_cloud, matrix_transform_r);
+
+  draw_box(box_cloud, vs, 0, 255, 255, "box");
+
+  Point p0_bottom = box_cloud->at(0);
+  Point p1_bottom = box_cloud->at(1);
+  Point p2_bottom = box_cloud->at(2);
+  Point p3_bottom = box_cloud->at(3);
+  Point p0_top = box_cloud->at(4);
+  Point p1_top = box_cloud->at(5);
+  Point p2_top = box_cloud->at(6);
+  Point p3_top = box_cloud->at(7);
+
+  int first_id=-1;
+  int second_id=-1;
+  float max=0;
+  float second_max=0;
+
+  for(int i=0; i<wall_rect_clouds.size(); i++){
+    Eigen::Vector3d normal0;
+    normal0 << wall_rect_clouds.at(i).mypoints.at(0).x - wall_rect_clouds.at(i).mypoints.at(1).x, wall_rect_clouds.at(i).mypoints.at(0).y - wall_rect_clouds.at(i).mypoints.at(1).y, wall_rect_clouds.at(i).mypoints.at(0).z - wall_rect_clouds.at(i).mypoints.at(1).z;
+    normal0.normalize();
+
+    Eigen::Vector3d normal1;
+    normal1 << wall_rect_clouds.at(i).mypoints.at(0).x - wall_rect_clouds.at(i).mypoints.at(3).x, wall_rect_clouds.at(i).mypoints.at(0).y - wall_rect_clouds.at(i).mypoints.at(3).y, wall_rect_clouds.at(i).mypoints.at(0).z - wall_rect_clouds.at(i).mypoints.at(3).z;
+    normal1.normalize();
+
+    Eigen::Vector3d wall_normal = normal0.cross(normal1);
+    wall_normal.normalize();
+
+    float A = wall_normal[0];
+    float B = wall_normal[1];
+    float C = wall_normal[2];
+    float D = -(A*wall_rect_clouds.at(i).mypoints.at(0).x+B*wall_rect_clouds.at(i).mypoints.at(0).y+C*wall_rect_clouds.at(i).mypoints.at(0).z);
+
+    cout<<"A=====:"<<A<<endl;
+    cout<<"B=====:"<<B<<endl;
+    cout<<"C=====:"<<C<<endl;
+    cout<<"D=====:"<<D<<endl;
+
+    cout<<"std::abs(A*p0_bottom.x+B*p0_bottom.y+C*p0_bottom.z+D):"<<std::abs(A*p0_bottom.x+B*p0_bottom.y+C*p0_bottom.z+D)<<endl;
+    cout<<"std::abs(A*p1_bottom.x+B*p1_bottom.y+C*p1_bottom.z+D):"<<std::abs(A*p1_bottom.x+B*p1_bottom.y+C*p1_bottom.z+D)<<endl;
+    cout<<"std::abs(A*p2_bottom.x+B*p2_bottom.y+C*p2_bottom.z+D):"<<std::abs(A*p2_bottom.x+B*p2_bottom.y+C*p2_bottom.z+D)<<endl;
+    cout<<"std::abs(A*p3_bottom.x+B*p3_bottom.y+C*p3_bottom.z+D):"<<std::abs(A*p3_bottom.x+B*p3_bottom.y+C*p3_bottom.z+D)<<endl;
+
+    if(max < std::abs(A*p0_bottom.x+B*p0_bottom.y+C*p0_bottom.z+D)){
+      second_max = max;
+      second_id = first_id;
+      
+      max = std::abs(A*p0_bottom.x+B*p0_bottom.y+C*p0_bottom.z+D);
+      first_id = 0;
+    }
+    else if(second_max < std::abs(A*p0_bottom.x+B*p0_bottom.y+C*p0_bottom.z+D)){
+      second_max = std::abs(A*p0_bottom.x+B*p0_bottom.y+C*p0_bottom.z+D);
+      second_id = 0;
+    }
+
+    cout<<"max:"<<max<<endl;
+
+    if(max < std::abs(A*p1_bottom.x+B*p1_bottom.y+C*p1_bottom.z+D)){
+      second_max = max;
+      second_id = first_id;
+
+      max = std::abs(A*p1_bottom.x+B*p1_bottom.y+C*p1_bottom.z+D);
+      first_id = 1;
+    }
+    else if(second_max < std::abs(A*p1_bottom.x+B*p1_bottom.y+C*p1_bottom.z+D)){
+      second_max = std::abs(A*p1_bottom.x+B*p1_bottom.y+C*p1_bottom.z+D);
+      second_id = 1;
+    }
+
+    cout<<"max:"<<max<<endl;
+
+    if(max < std::abs(A*p2_bottom.x+B*p2_bottom.y+C*p2_bottom.z+D)){
+      second_max = max;
+      second_id = first_id;
+
+      max = std::abs(A*p2_bottom.x+B*p2_bottom.y+C*p2_bottom.z+D);
+      first_id = 2;
+    }
+    else if(second_max < std::abs(A*p2_bottom.x+B*p2_bottom.y+C*p2_bottom.z+D)){
+      second_max = std::abs(A*p2_bottom.x+B*p2_bottom.y+C*p2_bottom.z+D);
+      second_id = 2;
+    }
+
+    cout<<"max:"<<max<<endl;
+
+    if(max < std::abs(A*p3_bottom.x+B*p3_bottom.y+C*p3_bottom.z+D)){
+      second_max = max;
+      second_id = first_id;
+
+      max = std::abs(A*p3_bottom.x+B*p3_bottom.y+C*p3_bottom.z+D);
+      first_id = 3;
+    }
+    else if(second_max < std::abs(A*p3_bottom.x+B*p3_bottom.y+C*p3_bottom.z+D)){
+      second_max = std::abs(A*p3_bottom.x+B*p3_bottom.y+C*p3_bottom.z+D);
+      second_id = 3;
+    }
+
+    cout<<"max:"<<max<<endl;
+  }
+
+  int first_id_r=0;
+  int second_id_r=0;
+
+  switch(first_id){
+  case 0:
+    switch(second_id){
+    case 1:
+      first_id_r=3;
+      second_id_r=2;
+      break;
+    case 3:
+      first_id_r=1;
+      second_id_r=2;
+      break;
+
+    }
+    break;
+  case 1:
+    switch(second_id){
+    case 0:
+      first_id_r=2;
+      second_id_r=3;
+      break;
+    case 2:
+      first_id_r=0;
+      second_id_r=3;
+      break;
+
+    }
+    break;
+  case 2:
+    switch(second_id){
+    case 1:
+      first_id_r=3;
+      second_id_r=0;
+      break;
+    case 3:
+      first_id_r=1;
+      second_id_r=0;
+      break;
+
+    }
+    break;
+  case 3:
+    switch(second_id){
+    case 0:
+      first_id_r=2;
+      second_id_r=1;
+      break;
+    case 2:
+      first_id_r=0;
+      second_id_r=1;
+      break;
+
+    }
+    break;
+  }
+
+
+  cout<<"first_id=============:"<<first_id<<endl;
+  cout<<"second_id=============:"<<second_id<<endl;
+  cout<<"first_id_r=============:"<<first_id_r<<endl;
+  cout<<"second_id_r=============:"<<second_id_r<<endl;
+
+  vs.viewer->addSphere(box_cloud->at(first_id), 0.025, "1");
+  vs.viewer->addSphere(box_cloud->at(second_id), 0.05, "2");
+
+  vs.viewer->addSphere(box_cloud->at(first_id_r), 0.1, "3");
+  vs.viewer->addSphere(box_cloud->at(second_id_r), 0.15, "4");
+
+  Eigen::Vector3d r_normal0;
+  r_normal0 << box_cloud->at(first_id).x - box_cloud->at(first_id_r).x, box_cloud->at(first_id).y - box_cloud->at(first_id_r).y, box_cloud->at(first_id).z - box_cloud->at(first_id_r).z;
+  r_normal0.normalize();
+
+  Point pos((box_cloud->at(first_id).x+box_cloud->at(second_id).x)/2, (box_cloud->at(first_id).y+box_cloud->at(second_id).y)/2, (box_cloud->at(first_id).z+box_cloud->at(second_id).z)/2);
+  
+  vs.viewer->addSphere(pos, 0.175, "5");
+
+  position.x = pos.x + 0.4*r_normal0[0];
+  position.y = pos.y + 0.4*r_normal0[1];
+  position.z = pos.z + 0.4*r_normal0[2];
+
+  vs.viewer->addSphere(position, 0.2, "6");
+}
+
+//get position that robot should go
+void getRobotPosition1(PointCloudPtr_RGB sourceCloud, vector<MyPointCloud> &wall_rect_clouds, Eigen::Matrix4f& matrix_transform, Eigen::Matrix4f& matrix_translation_r, Eigen::Matrix4f& matrix_transform_r, Point& position, Visualizer& vs){
+  PointCloudPtr_RGB new_cloud(new PointCloud_RGB);
+  pcl::transformPointCloud (*sourceCloud, *new_cloud, matrix_transform);
+
+  cv::Point2f p0;
+  cv::Point2f p1;
+  cv::Point2f p2;
+  cv::Point2f p3;
+
+  find_min_rect(new_cloud, p0,p1,p2,p3);
+
+  float min_x,min_y,min_z, max_x, max_y, max_z;
+
+  com_bounding_box(new_cloud, &min_x,&min_y,&min_z, &max_x, &max_y, &max_z);
+
+  PointCloudPtr box_cloud(new PointCloud);
+
+  box_cloud->push_back(Point(p0.x,p0.y,min_z));
+  box_cloud->push_back(Point(p1.x,p1.y,min_z));
+  box_cloud->push_back(Point(p2.x,p2.y,min_z));
+  box_cloud->push_back(Point(p3.x,p3.y,min_z));
+
+  box_cloud->push_back(Point(p0.x,p0.y,max_z));
+  box_cloud->push_back(Point(p1.x,p1.y,max_z));
+  box_cloud->push_back(Point(p2.x,p2.y,max_z));
+  box_cloud->push_back(Point(p3.x,p3.y,max_z));
+
+  PointCloud box_cloud_temp;
+  pcl::transformPointCloud (*box_cloud, box_cloud_temp, matrix_translation_r);
+  pcl::transformPointCloud (box_cloud_temp, *box_cloud, matrix_transform_r);
+
+  draw_box(box_cloud, vs, 0, 255, 255, "box");
+
+  int first_id0=-1;
+  int second_id0=-1;
+  int first_id1=-1;
+  int second_id1=-1;
+
+  float len0 = sqrt(pow(box_cloud->at(0).x-box_cloud->at(1).x, 2)+pow(box_cloud->at(0).y-box_cloud->at(1).y, 2)+pow(box_cloud->at(0).z-box_cloud->at(1).z, 2));
+  float len1 = sqrt(pow(box_cloud->at(0).x-box_cloud->at(3).x, 2)+pow(box_cloud->at(0).y-box_cloud->at(3).y, 2)+pow(box_cloud->at(0).z-box_cloud->at(3).z, 2));
+
+  if(len0 > len1){
+    first_id0 = 0;
+    second_id0 = 1;
+    first_id1 = 3;
+    second_id1 = 2;
+  }
+  else{
+    first_id0 = 0;
+    second_id0 = 3;
+    first_id1 = 1;
+    second_id1 = 4;
+  }
+
+
+  float sum_dis0 = sqrt(pow(box_cloud->at(first_id0).x, 2)+pow(box_cloud->at(first_id0).y, 2)+pow(box_cloud->at(first_id0).z, 2)) + sqrt(pow(box_cloud->at(second_id0).x, 2)+pow(box_cloud->at(second_id0).y, 2)+pow(box_cloud->at(second_id0).z, 2));
+  float sum_dis1 = sqrt(pow(box_cloud->at(first_id1).x, 2)+pow(box_cloud->at(first_id1).y, 2)+pow(box_cloud->at(first_id1).z, 2)) + sqrt(pow(box_cloud->at(second_id1).x, 2)+pow(box_cloud->at(second_id1).y, 2)+pow(box_cloud->at(second_id1).z, 2));
+  
+  Eigen::Vector3d r_normal0;
+
+  int first_id = -1;
+  int second_id = -1;
+
+  if(sum_dis0 < sum_dis1){
+    first_id = first_id0;
+    second_id = second_id0;
+
+    r_normal0 << box_cloud->at(first_id0).x - box_cloud->at(first_id1).x, box_cloud->at(first_id0).y - box_cloud->at(first_id1).y, box_cloud->at(first_id0).z - box_cloud->at(first_id1).z;
+    r_normal0.normalize();
+  }
+  else{
+    first_id = first_id1;
+    second_id = second_id1;
+
+    r_normal0 << box_cloud->at(first_id1).x - box_cloud->at(first_id0).x, box_cloud->at(first_id1).y - box_cloud->at(first_id0).y, box_cloud->at(first_id1).z - box_cloud->at(first_id0).z;
+    r_normal0.normalize();
+  }
+  
+  Point pos((box_cloud->at(first_id).x+box_cloud->at(second_id).x)/2, (box_cloud->at(first_id).y+box_cloud->at(second_id).y)/2, (box_cloud->at(first_id).z+box_cloud->at(second_id).z)/2);
+
+  vs.viewer->addSphere(pos, 0.15, "0");
+
+  position.x = pos.x + 0.4*r_normal0[0];
+  position.y = pos.y + 0.4*r_normal0[1];
+  position.z = pos.z + 0.4*r_normal0[2];
+
+  vs.viewer->addSphere(position, 0.15, "1");
+}

@@ -76,6 +76,16 @@ int main (int argc, char *argv[])
     }
 
     vs.viewer->addPointCloud(colored_pc, "c1");
+
+    Point position;
+    PointCloudPtr_RGB cl(new PointCloud_RGB);
+    MyPointCloud_RGB2PointCloud_RGB(cluster_origin_pcs.at(priority_vec.at(priority_vec.size()-1)), cl);
+    getRobotPosition1(cl, wall_rect_clouds, matrix_transform, matrix_translation_r, matrix_transform_r, position, vs);
+
+    //vs.viewer->addSphere(position, 0.1, "pos");
+
+
+
     //for(int i=0; i<cluster_origin_pcs.size() ; i++){
     //  PointCloudPtr box_cloud(new PointCloud);
     //  PointCloudPtr_RGB pc(new PointCloud_RGB);

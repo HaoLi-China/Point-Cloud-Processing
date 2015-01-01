@@ -53,4 +53,8 @@ void remove_outliers(PointCloudPtr_RGB remained_cloud, MyPointCloud& floor_rect_
 void pre_segment_scene(PointCloudPtr_RGB cloud, Eigen::Matrix4f& matrix_transform, Eigen::Matrix4f& matrix_translation_r, Eigen::Matrix4f& matrix_transform_r, vector<MyPointCloud_RGB>& cluster_projected_pcs, vector<MyPointCloud_RGB>& cluster_origin_pcs, PointCloudPtr_RGB colored_projected_pc, PointCloudPtr_RGB colored_origin_pc);
 //Set Priority for Clusters
 void setPriorityforClusters(vector<MyPointCloud_RGB>& cluster_projected_pcs, vector<MyPointCloud_RGB>& cluster_origin_pcs ,vector<int>& priority_vec);
+//get position that robot should go
+void getRobotPosition(PointCloudPtr_RGB sourceCloud, vector<MyPointCloud> &wall_rect_clouds, Eigen::Matrix4f& matrix_transform, Eigen::Matrix4f& matrix_translation_r, Eigen::Matrix4f& matrix_transform_r, Point& position, Visualizer& vs);
+//get position that robot should go
+void getRobotPosition1(PointCloudPtr_RGB sourceCloud, vector<MyPointCloud> &wall_rect_clouds, Eigen::Matrix4f& matrix_transform, Eigen::Matrix4f& matrix_translation_r, Eigen::Matrix4f& matrix_transform_r, Point& position, Visualizer& vs);
 #endif //BIGSCENE_PRESEG_H
