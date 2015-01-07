@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <IncludePath>D:\Program Files (x86)\OpenCV\opencv\build\include;E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\Boost\include;E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\Eigen\include;E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\flann\include;E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\GeometricTool\include;E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\PCL\include\pcl-1.7;E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\qhull\include;E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\VTK\include\vtk-5.8;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LibraryPath>D:\Program Files (x86)\OpenCV\opencv\build\x64\vc10\lib;E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\Boost\lib;E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\flann\lib;E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\GeometricTool\lib;E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\PCL\lib;E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\qhull\lib;E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\VTK\lib\vtk-5.8;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalDependencies>opencv_calib3d246d.lib;opencv_contrib246d.lib;opencv_core246d.lib;opencv_features2d246d.lib;opencv_flann246d.lib;opencv_highgui246d.lib;opencv_imgproc246d.lib;Wm5CoreD.lib;Wm5MathematicsD.lib;opengl32.lib;pcl_kdtree_debug.lib;pcl_io_debug.lib;pcl_search_debug.lib;pcl_segmentation_debug.lib;pcl_features_debug.lib;pcl_filters_debug.lib;pcl_visualization_debug.lib;pcl_common_debug.lib;flann_cpp_s-gd.lib;libboost_system-vc100-mt-gd-1_50.lib;libboost_filesystem-vc100-mt-gd-1_50.lib;libboost_thread-vc100-mt-gd-1_50.lib;libboost_date_time-vc100-mt-gd-1_50.lib;libboost_iostreams-vc100-mt-gd-1_50.lib;vtkalglib-gd.lib;vtkCharts-gd.lib;vtkCommon-gd.lib;vtkDICOMParser-gd.lib;vtkexoIIc-gd.lib;vtkexpat-gd.lib;vtkFiltering-gd.lib;vtkfreetype-gd.lib;vtkftgl-gd.lib;vtkGenericFiltering-gd.lib;vtkGeovis-gd.lib;vtkGraphics-gd.lib;vtkhdf5-gd.lib;vtkHybrid-gd.lib;vtkImaging-gd.lib;vtkInfovis-gd.lib;vtkIO-gd.lib;vtkjpeg-gd.lib;vtklibxml2-gd.lib;vtkmetaio-gd.lib;vtkNetCDF-gd.lib;vtkNetCDF_cxx-gd.lib;vtkpng-gd.lib;vtkproj4-gd.lib;vtkRendering-gd.lib;vtksqlite-gd.lib;vtksys-gd.lib;vtktiff-gd.lib;vtkverdict-gd.lib;vtkViews-gd.lib;vtkVolumeRendering-gd.lib;vtkWidgets-gd.lib;vtkzlib-gd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>
