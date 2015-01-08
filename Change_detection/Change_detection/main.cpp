@@ -6,9 +6,9 @@
 int main (int argc, char** argv)
 {
   PointCloudPtr_RGB cloudA (new PointCloud_RGB);
-  loadPointCloud_ply("data/can0.ply", cloudA);
+  loadPointCloud_ply("data/scan_frame2.ply", cloudA);
   PointCloudPtr_RGB cloudB (new PointCloud_RGB);
-  loadPointCloud_ply("data/can1.ply", cloudB);
+  loadPointCloud_ply("data/scan_frame3.ply", cloudB);
 
   PointCloudPtr_RGB planeCloudA(new PointCloud_RGB());
   PointCloudPtr rect_cloudA(new PointCloud());
@@ -21,6 +21,10 @@ int main (int argc, char** argv)
   detect_table(cloudA, coefficientsA, planeCloudA, rect_cloudA, remainingCloudA);
   detect_table(cloudB, coefficientsB, planeCloudB, rect_cloudB, remainingCloudB);
 
+  /* showPointCloud(planeCloudA, "planeCloudA");
+  showPointCloud(remainingCloudA, "remainingCloudA");
+  showPointCloud(planeCloudB, "planeCloudB");
+  showPointCloud(remainingCloudB, "remainingCloudB");*/
 
   Eigen::Matrix4f matrix_transformA;
   Eigen::Matrix4f matrix_transformA_r;
@@ -35,8 +39,8 @@ int main (int argc, char** argv)
   getCloudOnTable(remainingCloudA, rect_cloudA, matrix_transformA, matrix_transformA_r, tabletopCloudA);
   getCloudOnTable(remainingCloudB, rect_cloudB, matrix_transformB, matrix_transformB_r, tabletopCloudB);
 
-  showPointCloud(tabletopCloudA, "tabletopCloudA");
-  showPointCloud(tabletopCloudB, "tabletopCloudB");
+  //showPointCloud(tabletopCloudA, "tabletopCloudA");
+  //showPointCloud(tabletopCloudB, "tabletopCloudB");
 
   PointCloudPtr_RGB resultA (new PointCloud_RGB);
   PointCloudPtr_RGB resultB (new PointCloud_RGB);
