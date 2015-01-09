@@ -12,7 +12,10 @@ int main (int argc, char *argv[])
 
   PointCloudPtr_RGB_NORMAL cloud(new PointCloud_RGB_NORMAL);
   //loadPointCloud_normal_ply("data/big_table_normal.ply", cloud);
-  loadPointCloud_normal_ply("data/table0.ply", cloud);
+  //loadPointCloud_normal_ply("data/shuzhuo.ply", cloud);
+  //loadPointCloud_normal_ply("data/table.ply", cloud);
+  //loadPointCloud_normal_ply("data/round_table.ply", cloud);
+  loadPointCloud_normal_ply("data/in.ply", cloud);
 
   showPointCloud_RGB_NORMAL(cloud, "cloud");
 
@@ -46,11 +49,8 @@ int main (int argc, char *argv[])
   
   Eigen::Matrix4f matrix_transform;
   Eigen::Matrix4f matrix_transform_r;
-
-  printf("000000000\n");
-
   getTemTransformMatrix(coefficients, matrix_transform, matrix_transform_r);
-  printf("111111111\n");
+
   showPointCloud_RGB_NORMAL(remainingCloud, "remainingCloud");
 
   getCloudOnTable(remainingCloud, rect_cloud, matrix_transform, matrix_transform_r, tabletopCloud);
@@ -81,29 +81,39 @@ int main (int argc, char *argv[])
   float normal_importance = 1.0f;
 
   /******************Euclidean Cluster Extraction************************/
-  std::vector<PointCloudPtr_RGB_NORMAL> cluster_points;
+  std::vector<MyPointCloud_RGB_NORMAL> cluster_points;
 
   vector<MyPointCloud_RGB_NORMAL> vecPatchPoint;
   vector<Normal> vecPatcNormal;
 
   object_seg_ECE(tabletopCloud, cluster_points);
 
+  cout<<"cluster_points.size():"<<cluster_points.size()<<endl;
+
   for(int i=0;i<cluster_points.size();i++){
-    if(cluster_points.at(i)->size()<200){
+    if(cluster_points.at(i).mypoints.size()<200){
       continue;
     }
+
+    //showPointCloud_RGB_NORMAL(cluster_points.at(i), "cluster_points.at(i)");
 
     PointCloudT::Ptr colored_cloud(new PointCloudT);
     vector<MyPointCloud_RGB_NORMAL> patch_clouds;
     PointNCloudT::Ptr normal_cloud(new PointNCloudT);
-    VCCS_over_segmentation(cluster_points.at(i),voxel_resolution,seed_resolution,color_importance,spatial_importance,normal_importance,patch_clouds,colored_cloud,normal_cloud);
+
+    PointCloudPtr_RGB_NORMAL ct(new PointCloud_RGB_NORMAL);
+    MyPointCloud_RGB_NORMAL2PointCloud_RGB_NORMAL(cluster_points.at(i), ct);
+
+    //showPointCloud_RGB_NORMAL(ct, "ct");
+
+    VCCS_over_segmentation(ct,voxel_resolution,seed_resolution,color_importance,spatial_importance,normal_importance,patch_clouds,colored_cloud,normal_cloud);
 
     std::stringstream str;
     str<<"colored_voxel_cloud"<<i;
     std::string id_pc=str.str();
     vs.viewer->addPointCloud (colored_cloud, id_pc);
 
-    if(i==2){
+   /* if(i==2){
       for(int j=0;j<1;j++){
         double sum_x=0;
         double sum_y=0;
@@ -131,7 +141,7 @@ int main (int argc, char *argv[])
         cout<<"normal:"<<normal_cloud->at(j).normal_x<<" "<<normal_cloud->at(j).normal_y<<" "<<normal_cloud->at(j).normal_z<<" "<<endl;
 
       }
-    }
+    }*/
   }
 
   vs.show();

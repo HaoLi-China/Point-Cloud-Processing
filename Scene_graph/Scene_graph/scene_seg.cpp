@@ -847,7 +847,7 @@ void detect_separation_plane(PointCloudPtr_RGB_NORMAL cloud, vector<MyPointCloud
       break;
     }
 
-    if(l<0.7&&w<0.7){
+    if(l<1.4&&w<1.4){
 
       pcl::copyPointCloud(*remained_tem, *cloud_tem);
       PointCloudPtr_RGB_NORMAL plane_cloud_tem (new PointCloud_RGB_NORMAL);
@@ -918,40 +918,65 @@ void detect_separation_plane(PointCloudPtr_RGB_NORMAL cloud, vector<MyPointCloud
 //detect table
 void detect_table(PointCloudPtr_RGB_NORMAL sourceCloud, pcl::ModelCoefficients& plane_coefficients, PointCloudPtr_RGB_NORMAL planeCloud, PointCloudPtr rect_cloud, PointCloudPtr_RGB_NORMAL remainingCloud){
   pcl::ExtractIndices<Point_RGB_NORMAL> extract;// Create the filtering object
+  PointCloudPtr_RGB_NORMAL cloud_tem(new PointCloud_RGB_NORMAL);
+  PointCloudPtr_RGB_NORMAL cloud_p(new PointCloud_RGB_NORMAL);
 
-  pcl::PointIndices::Ptr inliers (new pcl::PointIndices);
-  // Create the segmentation object
-  pcl::SACSegmentation<Point_RGB_NORMAL> seg;
-  // Optional
-  seg.setOptimizeCoefficients (true);
-  // Mandatory
-  seg.setModelType (pcl::SACMODEL_PLANE);
-  seg.setMethodType (pcl::SAC_RANSAC);
-  seg.setMaxIterations (1000);
-  seg.setDistanceThreshold (0.015);
+  pcl::copyPointCloud(*sourceCloud, *cloud_tem);
 
+  while(1){
+    pcl::PointIndices::Ptr inliers (new pcl::PointIndices);
+    // Create the segmentation object
+    pcl::SACSegmentation<Point_RGB_NORMAL> seg;
+    // Optional
+    seg.setOptimizeCoefficients (true);
+    // Mandatory
+    seg.setModelType (pcl::SACMODEL_PLANE);
+    seg.setMethodType (pcl::SAC_RANSAC);
+    seg.setMaxIterations (1000);
+    seg.setDistanceThreshold (0.015);
 
-  // Segment the largest planar component from the remaining cloud
-  seg.setInputCloud (sourceCloud);
-  seg.segment (*inliers, plane_coefficients);
-  if (inliers->indices.size () == 0)
-  {
-    std::cerr << "Could not estimate a planar model for the given dataset." << std::endl;
-    return;
+    // Segment the largest planar component from the remaining cloud
+    seg.setInputCloud (cloud_tem);
+    seg.segment (*inliers, plane_coefficients);
+    if (inliers->indices.size () == 0)
+    {
+      std::cerr << "Could not estimate a planar model for the given dataset." << std::endl;
+      return;
+    }
+
+    //showPointCloud(cloud_tem, "cloud_tem");
+
+    // Extract the inliers
+    extract.setInputCloud (cloud_tem);
+    extract.setIndices (inliers);
+    extract.setNegative (false);
+    extract.filter (*planeCloud);
+    std::cerr << "PointCloud representing the planar component: " << planeCloud->width * planeCloud->height << " data points." << std::endl;
+
+    //showPointCloud(planeCloud, "planeCloud");
+
+    getRectForPlaneCloud(planeCloud, boost::make_shared<pcl::ModelCoefficients>(plane_coefficients), rect_cloud);
+
+    // Create the filtering object
+    extract.setNegative (true);
+    extract.filter (*cloud_p);
+    //showPointCloud(cloud_p, "cloud_p");
+
+    pcl::copyPointCloud(*cloud_p, *cloud_tem);
+
+    Eigen::Vector3d normal;
+    normal << plane_coefficients.values[0], plane_coefficients.values[1], plane_coefficients.values[2];
+    normal.normalize();
+
+    if(std::abs(normal.dot(Eigen::Vector3d(0,0,1)))>0.7){
+      break;
+    }
+    else{
+      appendCloud_RGB_NORMAL(planeCloud, remainingCloud);
+    }
   }
 
-  // Extract the inliers
-  extract.setInputCloud (sourceCloud);
-  extract.setIndices (inliers);
-  extract.setNegative (false);
-  extract.filter (*planeCloud);
-  std::cerr << "PointCloud representing the planar component: " << planeCloud->width * planeCloud->height << " data points." << std::endl;
-
-  getRectForPlaneCloud(planeCloud, boost::make_shared<pcl::ModelCoefficients>(plane_coefficients), rect_cloud);
-
-  // Create the filtering object
-  extract.setNegative (true);
-  extract.filter (*remainingCloud);
+  appendCloud_RGB_NORMAL(cloud_tem, remainingCloud);
 }
 
 //get transform matrix between plane and x_y plane 
@@ -997,7 +1022,8 @@ void getCloudOnTable(PointCloudPtr_RGB_NORMAL cloud, PointCloudPtr rect_cloud, E
       p.normal_y = cloud_tem->at(k).normal_y;
       p.normal_z = cloud_tem->at(k).normal_z;
 
-      if(cloud_tem->at(k).z < rect_cloud_tem->at(0).z){
+      //=========modify the height of tabletop things
+      if(cloud_tem->at(k).z < rect_cloud_tem->at(0).z + 0.015){
         continue;
       }
 
@@ -1171,7 +1197,7 @@ void getCloudOnTable(PointCloudPtr_RGB_NORMAL cloud, PointCloudPtr rect_cloud, E
 //}
 
 //Euclidean Cluster Extraction
-void object_seg_ECE(PointCloudPtr_RGB_NORMAL cloud, std::vector<PointCloudPtr_RGB_NORMAL> &cluster_points){
+void object_seg_ECE(PointCloudPtr_RGB_NORMAL cloud, std::vector<MyPointCloud_RGB_NORMAL> &cluster_points){
   // Creating the KdTree object for the search method of the extraction
   pcl::search::KdTree<Point_RGB_NORMAL>::Ptr tree (new pcl::search::KdTree<Point_RGB_NORMAL>);
   tree->setInputCloud (cloud);
@@ -1192,7 +1218,10 @@ void object_seg_ECE(PointCloudPtr_RGB_NORMAL cloud, std::vector<PointCloudPtr_RG
     for (std::vector<int>::const_iterator pit = it->indices.begin (); pit != it->indices.end (); pit++){
       cloud_cluster->points.push_back (cloud->points[*pit]); //*
     }
-    cluster_points.push_back(cloud_cluster);
+
+    MyPointCloud_RGB_NORMAL mpc;
+    PointCloud_RGB_NORMAL2MyPointCloud_RGB_NORMAL(cloud_cluster, mpc);
+    cluster_points.push_back(mpc);
 
     j++;
   }
@@ -2332,6 +2361,7 @@ void object_seg_Plane(PointCloudPtr_RGB_NORMAL sourceCloud, std::vector<pcl::Mod
 
 //VCCS over-segmentation
 void VCCS_over_segmentation(PointCloudPtr_RGB_NORMAL cloud, float voxel_resolution,float seed_resolution,float color_importance,float spatial_importance,float normal_importance,vector<MyPointCloud_RGB_NORMAL>& patch_clouds, PointCloudT::Ptr colored_cloud, PointNCloudT::Ptr normal_cloud){
+ 
   PointCloudT::Ptr ct(new PointCloudT);
   NormalCloudTPtr normals(new NormalCloudT);
 

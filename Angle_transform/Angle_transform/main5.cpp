@@ -162,7 +162,7 @@ int main (int argc, char *argv[])
   loadPointCloud_ply("data/calibration_data.ply", cloud);
 
   pcl::PolygonMesh::Ptr mesh (new pcl::PolygonMesh); 
-  pcl::io::loadPolygonFile("data/pr2_rotate_data/r_10_5.ply", *mesh); 
+  pcl::io::loadPolygonFile("data/table_yifei.ply", *mesh); 
   pcl::fromROSMsg(mesh->cloud, *scan1); 
 
 
@@ -216,7 +216,7 @@ int main (int argc, char *argv[])
 
   pcl::toROSMsg(*scan1, mesh->cloud);
 
-  pcl::io::savePLYFile("data/pr2_rotate_data/r_10_5_mesh.ply", *mesh);
+  pcl::io::savePLYFile("data/table_yifei_mesh.ply", *mesh);
 
   vs.show();
 

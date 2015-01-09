@@ -333,16 +333,19 @@ template <typename PointT> void
         for (std::vector<int>::const_iterator pit = it->indices.begin (); pit != it->indices.end (); pit++){
           cloud_cluster->points.push_back (voxels_tem->points[*pit]); //*
         }
-        
+
         if(cloud_cluster->size()<10){
           for(int i=0;i<cloud_cluster->size();i++){
             LeafContainerT* leaf_arg = adjacency_octree_->getLeafContainerAtPoint(cloud_cluster->at(i));
             VoxelData& data_tem = leaf_arg->getData();
-            data_tem.owner_ = 0;
-            data_tem.distance_ = std::numeric_limits<float>::max ();
 
-            sv_itr->removeLeaf(leaf_arg);
-          }
+            if(leaf_arg){
+              data_tem.owner_ = 0;
+              data_tem.distance_ = std::numeric_limits<float>::max ();
+
+              sv_itr->removeLeaf(leaf_arg);
+            }
+            }
         }
       }
     }

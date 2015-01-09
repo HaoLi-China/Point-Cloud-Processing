@@ -57,7 +57,7 @@ void getCloudOnTable(PointCloudPtr_RGB_NORMAL cloud, PointCloudPtr rect_cloud, E
 //detect table plane
 void detect_table_plane(PointCloudPtr_RGB_NORMAL sourceCloud, PointCloudPtr_RGB_NORMAL planeCloud, PointCloudPtr_RGB_NORMAL remainCloud);
 //Euclidean Cluster Extraction
-void object_seg_ECE(PointCloudPtr_RGB_NORMAL clound, vector<PointCloudPtr_RGB_NORMAL> &cluster_points);
+void object_seg_ECE(PointCloudPtr_RGB_NORMAL cloud, std::vector<MyPointCloud_RGB_NORMAL> &cluster_points);
 //find a minimum bounding rect
 void find_min_rect(PointCloudPtr_RGB_NORMAL cloud, cv::Point2f &p0,cv::Point2f &p1,cv::Point2f &p2,cv::Point2f &p3);
 //VCCS over-segmentation
