@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <IncludePath>IncludeLib\opencv\include;IncludeLib\Boost\include;IncludeLib\Eigen\include;IncludeLib\flann\include;IncludeLib\GeometricTool\include;IncludeLib\PCL\include\pcl-1.7;IncludeLib\qhull\include;IncludeLib\VTK\include\vtk-5.8;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LibraryPath>IncludeLib\opencv\lib\x64\vc10\lib;IncludeLib\Boost\lib;IncludeLib\flann\lib;IncludeLib\GeometricTool\lib;IncludeLib\PCL\lib;IncludeLib\qhull\lib;IncludeLib\VTK\lib\vtk-5.8;$(LibraryPath)</LibraryPath>
+    <_PropertySheetDisplayName>scene_graph_x64_release</_PropertySheetDisplayName>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalDependencies>opencv_calib3d246.lib;opencv_contrib246.lib;opencv_core246.lib;opencv_features2d246.lib;opencv_flann246.lib;opencv_highgui246.lib;opencv_imgproc246.lib;Wm5Core.lib;Wm5Mathematics.lib;opengl32.lib;pcl_kdtree_release.lib;pcl_io_release.lib;pcl_search_release.lib;pcl_segmentation_release.lib;pcl_features_release.lib;pcl_filters_release.lib;pcl_visualization_release.lib;pcl_common_release.lib;pcl_octree_release.lib;flann_cpp_s.lib;libboost_system-vc100-mt-1_50.lib;libboost_filesystem-vc100-mt-1_50.lib;libboost_thread-vc100-mt-1_50.lib;libboost_date_time-vc100-mt-1_50.lib;libboost_iostreams-vc100-mt-1_50.lib;vtkalglib.lib;vtkCharts.lib;vtkCommon.lib;vtkDICOMParser.lib;vtkexoIIc.lib;vtkexpat.lib;vtkFiltering.lib;vtkfreetype.lib;vtkftgl.lib;vtkGenericFiltering.lib;vtkGeovis.lib;vtkGraphics.lib;vtkhdf5.lib;vtkHybrid.lib;vtkImaging.lib;vtkInfovis.lib;vtkIO.lib;vtkjpeg.lib;vtklibxml2.lib;vtkmetaio.lib;vtkNetCDF.lib;vtkNetCDF_cxx.lib;vtkpng.lib;vtkproj4.lib;vtkRendering.lib;vtksqlite.lib;vtksys.lib;vtktiff.lib;vtkverdict.lib;vtkViews.lib;vtkVolumeRendering.lib;vtkWidgets.lib;vtkzlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <ClCompile>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>

@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{157A7965-EE59-4680-AF4C-1D2B0C78EF0A}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Scene_graph</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="scene_graph_x64_debug.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="scene_graph_x64_release.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <ExecutablePath>D:\Program Files (x86)\OpenCV\opencv\build\x86\vc10\bin;E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\Libs\GeometricTool;$(ExecutablePath)</ExecutablePath>
+    <IncludePath>E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\GeometricTool\include;E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\PCL\include\pcl-1.7;D:\Program Files (x86)\OpenCV\opencv\build\include;D:\Program Files\Boost-1.50.0-vs2010-x64\include;D:\Program Files\Eigen\include;D:\Program Files\flann-1.7.1-vs2010-x64\include;D:\Program Files\VTK_5.8.0\include\vtk-5.8;D:\Program Files\qhull-6.2.0.1385-vs2010-x64\include;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\GeometricTool\lib;E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\PCL\lib;D:\Program Files (x86)\OpenCV\opencv\build\x86\vc10\lib;D:\Program Files\Boost-1.50.0-vs2010-x64\lib;D:\Program Files\flann-1.7.1-vs2010-x64\lib;D:\Program Files\VTK_5.8.0\lib\vtk-5.8;D:\Program Files\qhull-6.2.0.1385-vs2010-x64\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <ExecutablePath>D:\Program Files (x86)\OpenCV\opencv\build\x64\vc10\bin;E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\DLL;$(ExecutablePath)</ExecutablePath>
+    <IncludePath>E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\GeometricTool\include;E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\PCL\include\pcl-1.7;D:\Program Files (x86)\OpenCV\opencv\build\include;E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\Boost\include;E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\Eigen\include;E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\flann\include;E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\VTK\include\vtk-5.8;E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\qhull\include;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\GeometricTool\lib;E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\PCL\lib;D:\Program Files (x86)\OpenCV\opencv\build\x64\vc10\lib;E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\Boost\lib;E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\flann\lib;E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\VTK\lib\vtk-5.8;E:\HaoLi\MyWorkspace\Scene_graph\Scene_graph\IncludeLib\qhull\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opencv_calib3d246d.lib;opencv_contrib246d.lib;opencv_core246d.lib;opencv_features2d246d.lib;opencv_flann246d.lib;Wm5Core.lib;Wm5CoreD.lib;Wm5Mathematics.lib;Wm5MathematicsD.lib;opengl32.lib;pcl_kdtree_debug.lib;pcl_io_debug.lib;pcl_search_debug.lib;pcl_segmentation_debug.lib;pcl_features_debug.lib;pcl_filters_debug.lib;pcl_visualization_debug.lib;pcl_common_debug.lib;flann_cpp_s-gd.lib;libboost_system-vc100-mt-gd-1_50.lib;libboost_filesystem-vc100-mt-gd-1_50.lib;libboost_thread-vc100-mt-gd-1_50.lib;libboost_date_time-vc100-mt-gd-1_50.lib;libboost_iostreams-vc100-mt-gd-1_50.lib;vtkalglib-gd.lib;vtkCharts-gd.lib;vtkCommon-gd.lib;vtkDICOMParser-gd.lib;vtkexoIIc-gd.lib;vtkexpat-gd.lib;vtkFiltering-gd.lib;vtkfreetype-gd.lib;vtkftgl-gd.lib;vtkGenericFiltering-gd.lib;vtkGeovis-gd.lib;vtkGraphics-gd.lib;vtkhdf5-gd.lib;vtkHybrid-gd.lib;vtkImaging-gd.lib;vtkInfovis-gd.lib;vtkIO-gd.lib;vtkjpeg-gd.lib;vtklibxml2-gd.lib;vtkmetaio-gd.lib;vtkNetCDF-gd.lib;vtkNetCDF_cxx-gd.lib;vtkpng-gd.lib;vtkproj4-gd.lib;vtkRendering-gd.lib;vtksqlite-gd.lib;vtksys-gd.lib;vtktiff-gd.lib;vtkverdict-gd.lib;vtkViews-gd.lib;vtkVolumeRendering-gd.lib;vtkWidgets-gd.lib;vtkzlib-gd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opencv_calib3d246d.lib;opencv_contrib246d.lib;opencv_core246d.lib;opencv_features2d246d.lib;opencv_flann246d.lib;opencv_highgui246d.lib;opencv_imgproc246d.lib;Wm5CoreD.lib;Wm5MathematicsD.lib;opengl32.lib;pcl_kdtree_debug.lib;pcl_io_debug.lib;pcl_search_debug.lib;pcl_segmentation_debug.lib;pcl_features_debug.lib;pcl_filters_debug.lib;pcl_visualization_debug.lib;pcl_common_debug.lib;flann_cpp_s-gd.lib;libboost_system-vc100-mt-gd-1_50.lib;libboost_filesystem-vc100-mt-gd-1_50.lib;libboost_thread-vc100-mt-gd-1_50.lib;libboost_date_time-vc100-mt-gd-1_50.lib;libboost_iostreams-vc100-mt-gd-1_50.lib;vtkalglib-gd.lib;vtkCharts-gd.lib;vtkCommon-gd.lib;vtkDICOMParser-gd.lib;vtkexoIIc-gd.lib;vtkexpat-gd.lib;vtkFiltering-gd.lib;vtkfreetype-gd.lib;vtkftgl-gd.lib;vtkGenericFiltering-gd.lib;vtkGeovis-gd.lib;vtkGraphics-gd.lib;vtkhdf5-gd.lib;vtkHybrid-gd.lib;vtkImaging-gd.lib;vtkInfovis-gd.lib;vtkIO-gd.lib;vtkjpeg-gd.lib;vtklibxml2-gd.lib;vtkmetaio-gd.lib;vtkNetCDF-gd.lib;vtkNetCDF_cxx-gd.lib;vtkpng-gd.lib;vtkproj4-gd.lib;vtkRendering-gd.lib;vtksqlite-gd.lib;vtksys-gd.lib;vtktiff-gd.lib;vtkverdict-gd.lib;vtkViews-gd.lib;vtkVolumeRendering-gd.lib;vtkWidgets-gd.lib;vtkzlib-gd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="color_op.h" />
+    <ClInclude Include="common_func.h" />
+    <ClInclude Include="common_type.h" />
+    <ClInclude Include="file_io.h" />
+    <ClInclude Include="scene_graph.h" />
+    <ClInclude Include="scene_seg.h" />
+    <ClInclude Include="supervoxel_clustering.h" />
+    <ClInclude Include="supervoxel_clustering.hpp" />
+    <ClInclude Include="utility.h" />
+    <ClInclude Include="visualizer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="color_op.cpp" />
+    <ClCompile Include="common_func.cpp" />
+    <ClCompile Include="common_type.cpp" />
+    <ClCompile Include="file_io.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="scene_graph.cpp" />
+    <ClCompile Include="scene_seg.cpp" />
+    <ClCompile Include="supervoxel_clustering.cpp" />
+    <ClCompile Include="utility.cpp" />
+    <ClCompile Include="visualizer.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
