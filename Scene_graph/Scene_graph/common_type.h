@@ -47,6 +47,7 @@ typedef struct MyPoint_RGB{
   float r;
   float g;
   float b;
+  float a;
 }MyPt_RGB;
 
 typedef struct MyPoint_RGB_NORMAL{
@@ -56,6 +57,7 @@ typedef struct MyPoint_RGB_NORMAL{
   float r;
   float g;
   float b;
+  float a;
   float normal_x;
   float normal_y;
   float normal_z;

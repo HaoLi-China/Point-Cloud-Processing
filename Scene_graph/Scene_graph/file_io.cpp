@@ -49,6 +49,7 @@ bool loadPointCloud_ply(char* fileName, PointCloudPtr_RGB cloud){
     point_tem.r=r;
     point_tem.g=g;
     point_tem.b=b;
+    point_tem.a=i;//save point index
 
     cloud->push_back(point_tem);
   }

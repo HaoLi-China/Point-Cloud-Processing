@@ -57,6 +57,7 @@ void MyPointCloud_RGB2PointCloud_RGB(MyPointCloud_RGB& mc, PointCloudPtr_RGB pc)
     point_tem.r=mc.mypoints.at(i).r;
     point_tem.g=mc.mypoints.at(i).g;
     point_tem.b=mc.mypoints.at(i).b;
+    point_tem.a=mc.mypoints.at(i).a;
 
     pc->push_back(point_tem);
   }
@@ -65,7 +66,7 @@ void MyPointCloud_RGB2PointCloud_RGB(MyPointCloud_RGB& mc, PointCloudPtr_RGB pc)
 //convert PointCloud_RGB to MyPointCloud_RGB
 void PointCloud_RGB2MyPointCloud_RGB(PointCloudPtr_RGB pc, MyPointCloud_RGB& mc){
   for(int i=0;i<pc->size();i++){
-    MyPt_RGB mp={pc->at(i).x,pc->at(i).y,pc->at(i).z,pc->at(i).r,pc->at(i).g,pc->at(i).b};
+    MyPt_RGB mp={pc->at(i).x,pc->at(i).y,pc->at(i).z,pc->at(i).r,pc->at(i).g,pc->at(i).b,pc->at(i).a};
     mc.mypoints.push_back(mp);
   }
 }
@@ -80,6 +81,7 @@ void MyPointCloud_RGB_NORMAL2PointCloud_RGB_NORMAL(MyPointCloud_RGB_NORMAL& mc, 
     point_tem.r=mc.mypoints.at(i).r;
     point_tem.g=mc.mypoints.at(i).g;
     point_tem.b=mc.mypoints.at(i).b;
+    point_tem.b=mc.mypoints.at(i).a;
     point_tem.normal_x=mc.mypoints.at(i).normal_x;
     point_tem.normal_y=mc.mypoints.at(i).normal_y;
     point_tem.normal_z=mc.mypoints.at(i).normal_z;
@@ -91,7 +93,7 @@ void MyPointCloud_RGB_NORMAL2PointCloud_RGB_NORMAL(MyPointCloud_RGB_NORMAL& mc, 
 //convert PointCloud_RGB_NORMAL to MyPointCloud_RGB_NORMAL
 void PointCloud_RGB_NORMAL2MyPointCloud_RGB_NORMAL(PointCloudPtr_RGB_NORMAL pc, MyPointCloud_RGB_NORMAL& mc){
   for(int i=0;i<pc->size();i++){
-    MyPt_RGB_NORMAL mp={pc->at(i).x,pc->at(i).y,pc->at(i).z,pc->at(i).r,pc->at(i).g,pc->at(i).b,pc->at(i).normal_x,pc->at(i).normal_y,pc->at(i).normal_z};
+    MyPt_RGB_NORMAL mp={pc->at(i).x,pc->at(i).y,pc->at(i).z,pc->at(i).r,pc->at(i).g,pc->at(i).b,pc->at(i).a,pc->at(i).normal_x,pc->at(i).normal_y,pc->at(i).normal_z};
     mc.mypoints.push_back(mp);
   }
 }
@@ -130,6 +132,7 @@ void CopyMyPointCloud_RGB(MyPointCloud_RGB& source, MyPointCloud_RGB& target){
     mpt.r=source.mypoints.at(i).r;
     mpt.g=source.mypoints.at(i).g;
     mpt.b=source.mypoints.at(i).b;
+    mpt.a=source.mypoints.at(i).a;
 
     target.mypoints.push_back(mpt);
   }

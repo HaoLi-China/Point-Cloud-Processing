@@ -1023,7 +1023,7 @@ void getCloudOnTable(PointCloudPtr_RGB_NORMAL cloud, PointCloudPtr rect_cloud, E
       p.normal_z = cloud_tem->at(k).normal_z;
 
       //=========modify the height of tabletop things
-      if(cloud_tem->at(k).z < rect_cloud_tem->at(0).z + 0.015){
+      if(cloud_tem->at(k).z < rect_cloud_tem->at(0).z /*+ 0.015*/){
         continue;
       }
 
